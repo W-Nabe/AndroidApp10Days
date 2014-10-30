@@ -4,13 +4,13 @@ import android.R.integer;
 
 public class Calculater {
 	
-	// 入力中の文字列や演算子、計算結果を表示する
-	StringBuilder mInputNumber = new StringBuilder(); // 入力中の文字
-	String mOperator; // 演算子
+	// 入力中の文字列や演算子、計算結果を保持する
+	StringBuilder mInputNumber = new StringBuilder(); // 入力中の文字列
+	String mOperator; // 入力中の演算子
 	int mResult = 0; // 計算結果
 	
 	
-	// パラメータのKeyが数値ならtrueを返却する処理
+	// パラメータの値が数値ならtrueを返却
 	private boolean isNumber(String key) {
 		try {
 			Integer.parseInt(key);
@@ -21,7 +21,7 @@ public class Calculater {
 	}
 	
 	
-	// パラメータのKeyがサポートしている演算子ならtrueを返却する処理
+	// パラメータの値がサポートしている演算子ならtrueを返却
 	private boolean isSupportedOperator(String Key) {
 		if (Key.equals("+")) {
 			return true;
@@ -41,7 +41,7 @@ public class Calculater {
 	}
 	
 	
-	// 演算を実施する処理
+	// 演算を実施
 	private void doCalculation(String ope) {
 		if(ope.equals("+")) {
 			mResult = mResult + Integer.parseInt(mInputNumber.toString());
@@ -56,16 +56,17 @@ public class Calculater {
 		mInputNumber = new StringBuilder();
 	}
 	
-	// 入力された文字を元に処理を行い、ディスプレイに結果を返却する処理
+	// 入力された文字列を元に処理を行い、ディスプレイに表示する結果を返却する
 	public String putInput(String key) {
 		if(isNumber(key)) {
 
+			// 数値の場合次の入力を待つ
 			mInputNumber.append(key);
 			return mInputNumber.toString();
 
 		} else if(isSupportedOperator(key)) {
 
-			// =なら演算を行い、結果を表示する
+			// ＝なら演算を行い、返却する
 			if (key.equals("=")) {
 				if (mOperator != null) {
 					doCalculation(mOperator);
@@ -74,11 +75,11 @@ public class Calculater {
 				return Integer.toString(mResult);
 			} else {
 				if (mOperator != null) {
-					// 入力中の演算子があるなら、演算を行い、次の入力を待つ
+					// 入力中の演算子があるなら、前回の結果を用いて演算を行う
 					doCalculation(mOperator);
 					mOperator = null;
 				} else if (mInputNumber.length() > 0) {
-					// 初めての演算子入力なら、入力中の数値を設定する
+					// 初めての演算子なら入力中の数値を設定する
 					mResult = Integer.parseInt(mInputNumber.toString());
 					mInputNumber = new StringBuilder();
 				}
